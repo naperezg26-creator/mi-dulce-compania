@@ -1,0 +1,31 @@
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+
+      <div class="caja-destacada p-5">
+
+        <h2 class="proposito text-center mb-4">Crear Cuenta</h2>
+
+        <input [(ngModel)]="nombre" placeholder="Nombre"
+               class="form-control input-suave mb-3">
+
+        <input [(ngModel)]="email" placeholder="Email"
+               class="form-control input-suave mb-3">
+
+        <input [(ngModel)]="password" type="password"
+               placeholder="Contraseña"
+               class="form-control input-suave mb-3">
+
+        <div *ngIf="mensaje" class="text-danger mb-3">
+          {{ mensaje }}
+        </div>
+
+        <button (click)="registrar()" class="btn btn-pastel w-100">
+          Registrarse
+        </button>
+
+      </div>
+
+    </div>
+  </div>
+</div>

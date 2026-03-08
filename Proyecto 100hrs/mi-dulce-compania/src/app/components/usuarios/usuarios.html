@@ -1,0 +1,109 @@
+<div class="gestion-container">
+  <div class="header-seccion">
+    <h2 class="titulo-seccion">Gestión de Usuarios</h2>
+    <button class="btn-crear" (click)="vistaActiva = vistaActiva === 'crear' ? 'lista' : 'crear'">
+      {{ vistaActiva === 'crear' ? '← Volver a lista' : '+ Nuevo Usuario' }}
+    </button>
+  </div>
+
+  <div *ngIf="mensaje" [class]="'alerta alerta-' + tipoMensaje">
+    {{ mensaje }}
+  </div>
+
+  <!-- FORMULARIO CREAR -->
+  <div class="card-panel" *ngIf="vistaActiva === 'crear'">
+    <h5 class="panel-titulo">Nuevo Usuario</h5>
+    <div class="form-grid">
+      <input
+        [(ngModel)]="nuevoNombre"
+        name="nuevoNombre"
+        class="campo"
+        placeholder="Nombre completo">
+      <input
+        [(ngModel)]="nuevoEmail"
+        name="nuevoEmail"
+        type="email"
+        class="campo"
+        placeholder="Correo electrónico">
+      <input
+        [(ngModel)]="nuevoPassword"
+        name="nuevoPassword"
+        type="password"
+        class="campo"
+        placeholder="Contraseña">
+      <select [(ngModel)]="nuevoIdrol" name="nuevoIdrol" class="campo">
+        <option value="cliente">Cliente</option>
+        <option value="admin">Admin</option>
+      </select>
+    </div>
+    <div class="form-acciones">
+      <button class="btn-secundario" (click)="vistaActiva = 'lista'">Cancelar</button>
+      <button class="btn-crear" (click)="crearUsuario()">Guardar Usuario</button>
+    </div>
+  </div>
+
+  <!-- TABLA -->
+  <div class="card-panel" *ngIf="vistaActiva === 'lista'">
+    <div class="header-tabla">
+      <h5 class="panel-titulo">Lista de Usuarios</h5>
+      <div class="buscador-wrapper">
+        <span class="buscador-icon">&#128269;</span>
+        <input [(ngModel)]="busqueda"
+               name="busqueda"
+               type="text"
+               class="campo buscador-input"
+               placeholder="Buscar usuario...">
+      </div>
+    </div>
+    <div class="tabla-wrapper">
+      <table class="tabla">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Email</th>
+            <th>Rol</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let u of usuariosFiltrados">
+
+            <!-- FILA NORMAL -->
+            <ng-container *ngIf="usuarioEditando?._id !== u._id">
+              <td>{{ u.nombre }}</td>
+              <td>{{ u.email }}</td>
+              <td>
+                <span [class]="'badge badge-' + u.idrol">{{ u.idrol }}</span>
+              </td>
+              <td>
+                <div class="acciones-celda">
+                  <button class="btn-editar" (click)="abrirEdicion(u)">Editar</button>
+                  <button class="btn-eliminar" (click)="eliminarUsuario(u._id)">Eliminar</button>
+                </div>
+              </td>
+            </ng-container>
+
+            <!-- FILA EN EDICIÓN -->
+            <ng-container *ngIf="usuarioEditando?._id === u._id">
+              <td><input [(ngModel)]="nombreEdit" class="campo-inline"></td>
+              <td><input [(ngModel)]="emailEdit" class="campo-inline"></td>
+              <td>
+                <select [(ngModel)]="idrolEdit" class="campo-inline">
+                  <option value="cliente">Cliente</option>
+                  <option value="admin">Admin</option>
+                </select>
+              </td>
+              <td>
+                <div class="acciones-celda">
+                  <button class="btn-guardar" (click)="guardarEdicion()">Guardar</button>
+                  <button class="btn-cancelar" (click)="cancelarEdicion()">Cancelar</button>
+                </div>
+              </td>
+            </ng-container>
+
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

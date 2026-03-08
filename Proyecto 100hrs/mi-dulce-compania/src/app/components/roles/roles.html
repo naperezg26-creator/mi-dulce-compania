@@ -1,0 +1,87 @@
+<div class="gestion-container">
+  <h2 class="titulo-seccion">Gestión de Roles</h2>
+
+  <div *ngIf="mensaje" [class]="'alerta alerta-' + tipoMensaje">
+    {{ mensaje }}
+  </div>
+
+  <!-- FORMULARIO CREAR -->
+  <div class="card-panel">
+    <h5 class="panel-titulo">Nuevo Rol</h5>
+    <div class="form-grid">
+      <input
+        [(ngModel)]="nombre"
+        name="nombre"
+        class="campo"
+        placeholder="Nombre del rol">
+      <select [(ngModel)]="estado" name="estado" class="campo">
+        <option value="activo">Activo</option>
+        <option value="inactivo">Inactivo</option>
+      </select>
+      <textarea
+        [(ngModel)]="descripcion"
+        name="descripcion"
+        class="campo textarea-campo"
+        placeholder="Descripción del rol">
+      </textarea>
+    </div>
+    <div class="form-acciones">
+      <button class="btn-crear" (click)="crearRol()">+ Crear Rol</button>
+    </div>
+  </div>
+
+  <!-- TABLA -->
+  <div class="card-panel">
+    <h5 class="panel-titulo">Lista de Roles</h5>
+    <div class="tabla-wrapper">
+      <table class="tabla">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let r of roles">
+
+            <!-- FILA NORMAL -->
+            <ng-container *ngIf="rolEditando?._id !== r._id">
+              <td>{{ r.nombre }}</td>
+              <td>{{ r.descripcion || '—' }}</td>
+              <td>
+                <span [class]="'badge badge-' + r.estado">{{ r.estado }}</span>
+              </td>
+              <td>
+                <div class="acciones-celda">
+                  <button class="btn-editar" (click)="abrirEdicion(r)">Editar</button>
+                  <button class="btn-eliminar" (click)="eliminarRol(r._id)">Eliminar</button>
+                </div>
+              </td>
+            </ng-container>
+
+            <!-- FILA EN EDICIÓN -->
+            <ng-container *ngIf="rolEditando?._id === r._id">
+              <td><input [(ngModel)]="nombreEdit" class="campo-inline"></td>
+              <td><input [(ngModel)]="descripcionEdit" class="campo-inline"></td>
+              <td>
+                <select [(ngModel)]="estadoEdit" class="campo-inline">
+                  <option value="activo">Activo</option>
+                  <option value="inactivo">Inactivo</option>
+                </select>
+              </td>
+              <td>
+                <div class="acciones-celda">
+                  <button class="btn-guardar" (click)="guardarEdicion()">Guardar</button>
+                  <button class="btn-cancelar" (click)="cancelarEdicion()">Cancelar</button>
+                </div>
+              </td>
+            </ng-container>
+
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

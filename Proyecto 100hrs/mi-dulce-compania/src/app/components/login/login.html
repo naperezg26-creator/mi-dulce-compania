@@ -1,0 +1,43 @@
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-md-5">
+      <div class="card shadow border-0">
+        <div class="card-body p-5">
+
+          <h2 class="text-center proposito mb-4">Iniciar Sesión</h2>
+
+          <form (ngSubmit)="login()">
+
+            <div class="mb-3">
+              <input [(ngModel)]="email"
+                     name="email"
+                     type="email"
+                     class="form-control input-suave"
+                     placeholder="Email"
+                     required>
+            </div>
+
+            <div class="mb-3">
+              <input [(ngModel)]="password"
+                     name="password"
+                     type="password"
+                     class="form-control input-suave"
+                     placeholder="Contraseña"
+                     required>
+            </div>
+
+            <div *ngIf="mensaje" class="text-danger mb-3">
+              {{ mensaje }}
+            </div>
+
+            <button type="submit" class="btn btn-pastel w-100">
+              Entrar
+            </button>
+
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

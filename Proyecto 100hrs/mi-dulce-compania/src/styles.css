@@ -1,0 +1,448 @@
+:root {
+    --crema-base: #FFF7ED;
+    --crema-secundaria: #F3E7D8;
+    --crema-oscuro: #E6D2BC;
+
+    --azul-pastel: #CFE3F0;
+    --azul-suave: #E9F2F8;
+    --azul-medio: #8FAFC6;
+
+    --texto-oscuro: #6B6B6B;
+    --blanco-suave: #FFFFFF;
+}
+
+body {
+    background-color: var(--crema-base);
+    color: var(--texto-oscuro);
+    font-family: 'Poppins', 'Segoe UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    margin: 0;
+    padding: 0;
+}
+
+/* ============================================
+   NAVEGACIÓN Y NAVBAR
+   ============================================ */
+
+.navbar {
+    background-color: var(--crema-base) !important;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+/* Indicador de página activa */
+.nav-link {
+    position: relative;
+    transition: color 0.3s ease;
+}
+
+.nav-link.active {
+    color: var(--azul-medio) !important;
+    font-weight: 600;
+}
+
+.nav-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: var(--azul-medio);
+    border-radius: 2px;
+}
+
+.nav-link:hover {
+    color: var(--azul-medio) !important;
+}
+
+/* ============================================
+   CARRITO DE COMPRAS
+   ============================================ */
+
+.carrito-icon {
+    color: var(--texto-oscuro);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    margin-right: 1rem;
+}
+
+.carrito-icon:hover {
+    color: var(--azul-medio);
+    transform: scale(1.1);
+}
+
+.badge-carrito {
+    font-size: 0.65rem;
+    padding: 0.25em 0.5em;
+}
+
+/* ============================================
+   BOTONES
+   ============================================ */
+
+.btn-pastel {
+    background-color: var(--azul-medio);
+    color: var(--blanco-suave);
+    border: none;
+    border-radius: 14px;
+    padding: 0.6rem 1.4rem;
+    font-weight: 500;
+    transition: all 0.25s ease;
+    cursor: pointer;
+}
+
+.btn-pastel:hover {
+    background-color: var(--azul-pastel);
+    color: var(--texto-oscuro);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(143, 175, 198, 0.3);
+}
+
+.btn-outline-secondary {
+    border-color: var(--azul-medio);
+    color: var(--azul-medio);
+    border-radius: 14px;
+    transition: all 0.25s ease;
+}
+
+.btn-outline-secondary:hover {
+    background-color: var(--azul-medio);
+    color: var(--blanco-suave);
+}
+
+/* ============================================
+   CAJAS DESTACADAS (Misión, Visión, etc.)
+   ============================================ */
+
+.caja-destacada {
+    background-color: var(--crema-oscuro);
+    border-radius: 40px; 
+    padding: 3rem 2rem; 
+    box-shadow: 0 4px 20px rgba(143, 175, 198, 0.15); 
+}
+
+.proposito {
+    color: var(--azul-medio);
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    margin-bottom: 1.5rem;
+}
+
+.titulo-grande {
+    font-size: 2.5rem;
+}
+
+.texto-lectura-grande {
+    color: var(--texto-oscuro);
+    line-height: 1.8;
+    font-size: 1.25rem; 
+}
+
+.imagen-circular {
+    width: 280px; 
+    height: 280px; 
+    object-fit: cover; 
+    border-radius: 50%; 
+    border: 5px solid var(--crema-base); 
+}
+
+/* ============================================
+   PÁGINA HOME
+   ============================================ */
+
+.seccion-bienvenida {
+    margin-top: 5rem;   
+    margin-bottom: 3rem; 
+    padding: 0 1rem;   
+}
+
+.titulo-bienvenida {
+    color: var(--texto-oscuro);
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.texto-subtitulo {
+    color: #888;
+    font-size: 1.1rem;
+}
+
+/* ============================================
+   PÁGINA TIENDA
+   ============================================ */
+
+.titulo-tienda {
+    color: var(--azul-medio);
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+/* Barra de búsqueda */
+.input-busqueda .form-control {
+    background-color: var(--blanco-suave);
+    border: 2px solid var(--crema-oscuro);
+    border-radius: 15px;
+    padding: 0.8rem 1rem;
+    transition: all 0.3s ease;
+}
+
+.input-busqueda .form-control:focus {
+    border-color: var(--azul-medio);
+    box-shadow: 0 0 10px rgba(143, 175, 198, 0.2);
+}
+
+.input-busqueda .input-group-text {
+    border: 2px solid var(--crema-oscuro);
+    border-right: none;
+    border-radius: 15px 0 0 15px;
+    background-color: var(--blanco-suave);
+}
+
+/* Tarjetas de producto */
+.producto-card {
+    transition: all 0.3s ease;
+    border: none;
+    border-radius: 20px;
+    overflow: hidden;
+    background-color: var(--blanco-suave);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+}
+
+.producto-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 25px rgba(143, 175, 198, 0.25);
+}
+
+.producto-imagen {
+    height: 250px;
+    object-fit: cover;
+    border-radius: 20px 20px 0 0;
+}
+
+.producto-titulo {
+    color: var(--azul-medio);
+    font-weight: 600;
+    font-size: 1.3rem;
+}
+
+.producto-descripcion {
+    color: var(--texto-oscuro);
+    font-size: 0.95rem;
+}
+
+.producto-precio {
+    color: var(--azul-medio);
+    font-weight: 700;
+    font-size: 1.5rem;
+}
+
+/* Selector de cantidad */
+.cantidad-selector {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.cantidad-selector button {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    border: 2px solid var(--azul-medio);
+    background-color: var(--blanco-suave);
+    color: var(--azul-medio);
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.cantidad-selector button:hover {
+    background-color: var(--azul-medio);
+    color: var(--blanco-suave);
+}
+
+.cantidad-selector span {
+    font-weight: 600;
+    font-size: 1.1rem;
+    min-width: 30px;
+    text-align: center;
+}
+
+/* ============================================
+   PÁGINA CONTACTO
+   ============================================ */
+
+.imagen-contacto {
+    border-radius: 40px;
+    border: 5px solid var(--blanco-suave);
+    transform: rotate(2deg);
+    transition: transform 0.3s ease;
+}
+
+.imagen-contacto:hover {
+    transform: rotate(0deg);
+}
+
+.contenedor-botones-sociales {
+    max-width: 400px;
+}
+
+.boton-social {
+    display: flex;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    background-color: var(--blanco-suave);
+    border-radius: 20px;
+    text-decoration: none;
+    color: var(--texto-oscuro);
+    font-weight: 600;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.boton-social:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+}
+
+.whatsapp:hover {
+    color: #25D366;
+    border-color: #25D366;
+}
+
+.instagram:hover {
+    color: #E1306C;
+    border-color: #E1306C;
+}
+
+.facebook:hover {
+    color: #1877F2;
+    border-color: #1877F2;
+}
+
+.icono-social-img {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 1rem;
+}
+
+/* ============================================
+   FORMULARIOS
+   ============================================ */
+
+.input-suave {
+    background-color: var(--blanco-suave);
+    border: 2px solid transparent;
+    border-radius: 15px;
+    padding: 0.8rem 1rem;
+    color: var(--texto-oscuro);
+    transition: all 0.3s ease;
+}
+
+.input-suave:focus {
+    background-color: #fff;
+    border-color: var(--azul-medio);
+    box-shadow: 0 0 10px rgba(143, 175, 198, 0.2);
+    color: var(--texto-oscuro);
+    outline: none;
+}
+
+.input-suave.is-invalid {
+    border-color: #dc3545;
+}
+
+.input-suave.is-valid {
+    border-color: #28a745;
+}
+
+.etiqueta-pastel {
+    color: var(--azul-medio);
+    font-weight: 600;
+    margin-left: 0.5rem;
+    font-size: 0.95rem;
+}
+
+.invalid-feedback,
+.valid-feedback {
+    margin-left: 0.5rem;
+    font-size: 0.875rem;
+}
+
+.link-azul {
+    color: var(--azul-medio);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.link-azul:hover {
+    color: var(--azul-pastel);
+    text-decoration: underline;
+}
+
+/* ============================================
+   FOOTER
+   ============================================ */
+
+.link-footer {
+    color: var(--texto-oscuro);
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.3s ease;
+}
+
+.link-footer:hover {
+    color: var(--azul-medio);
+    text-decoration: underline;
+}
+
+/* ============================================
+   NOTIFICACIONES TOAST
+   ============================================ */
+
+.toast {
+    border-radius: 15px;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 768px) {
+    .contenedor-botones-sociales {
+        max-width: 100%;
+    }
+    
+    .imagen-contacto {
+        margin-top: 2rem;
+        transform: rotate(0deg);
+    }
+
+    .caja-destacada {
+        padding: 2rem 1.5rem;
+        border-radius: 30px;
+    }
+    
+    .titulo-grande {
+        font-size: 2rem;
+        text-align: center;
+    }
+    
+    .texto-lectura-grande {
+        font-size: 1.1rem;
+        text-align: center;
+    }
+
+    .imagen-circular {
+        width: 220px;
+        height: 220px;
+        margin-bottom: 1.5rem;
+    }
+
+    .nav-link.active::after {
+        bottom: -8px;
+    }
+}
