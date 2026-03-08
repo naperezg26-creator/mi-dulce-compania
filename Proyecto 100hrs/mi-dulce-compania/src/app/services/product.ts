@@ -14,6 +14,10 @@ export class ProductService {
     return this.http.get(`${this.API_URL}/productos/ListarTodos`);
   }
 
+  listarPorId(_id: string) {
+    return this.http.get(`${this.API_URL}/productos/ListarId`, { params: { _id } });
+  }
+
   crearProducto(data: any, imagen?: File) {
     const formData = new FormData();
     formData.append('codigo', data.codigo);

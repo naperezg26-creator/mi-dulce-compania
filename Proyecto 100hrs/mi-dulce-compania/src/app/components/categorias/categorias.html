@@ -1,0 +1,110 @@
+<div class="container mt-5">
+
+  <h2 class="titulo-tienda text-center mb-4">Gestión de Categorías</h2>
+
+  <!-- ALERTA -->
+  <div *ngIf="mensaje" [class]="'alert alert-' + (tipoMensaje === 'exito' ? 'success' : 'danger') + ' alert-dismissible'" role="alert">
+    <i [class]="'bi ' + (tipoMensaje === 'exito' ? 'bi-check-circle-fill' : 'bi-exclamation-triangle-fill') + ' me-2'"></i>
+    {{ mensaje }}
+  </div>
+
+  <!-- FORMULARIO CREAR -->
+  <div class="card p-4 mb-4 shadow-sm">
+
+    <h5 class="mb-3">Crear Categoría</h5>
+
+    <div class="row g-3">
+
+      <div class="col-md-4">
+        <input [(ngModel)]="nombre" name="nombre"
+               class="form-control"
+               placeholder="Nombre">
+      </div>
+
+      <div class="col-md-4">
+        <input [(ngModel)]="descripcion" name="descripcion"
+               class="form-control"
+               placeholder="Descripción">
+      </div>
+
+      <div class="col-md-4">
+        <select [(ngModel)]="estado" name="estado"
+                class="form-select">
+          <option value="activo">Activo</option>
+          <option value="inactivo">Inactivo</option>
+        </select>
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label fw-semibold">Imagen de la categoría</label>
+        <input type="file"
+               class="form-control"
+               accept="image/*"
+               (change)="onImagenSeleccionada($event)">
+      </div>
+      <div class="col-md-6 d-flex align-items-center" *ngIf="imagenPreview">
+        <img [src]="imagenPreview" alt="Preview" style="max-height: 80px; border-radius: 10px;">
+      </div>
+
+      <div class="col-12 text-end">
+        <button class="btn btn-pastel"
+                (click)="crearCategoria()">
+          Crear Categoría
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- TABLA -->
+  <div class="card p-4 shadow-sm">
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h5 class="mb-0">Lista de Categorías</h5>
+      <div class="input-group" style="max-width: 280px;">
+        <span class="input-group-text"><i class="bi bi-search"></i></span>
+        <input [(ngModel)]="busqueda"
+               name="busqueda"
+               type="text"
+               class="form-control"
+               placeholder="Buscar categoría...">
+      </div>
+    </div>
+
+    <table class="table table-striped align-middle">
+      <thead>
+        <tr>
+          <th>Imagen</th>
+          <th>Nombre</th>
+          <th>Descripción</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let c of categoriasFiltradas">
+          <td>
+            <img *ngIf="c.imagen" [src]="'http://localhost:3000' + c.imagen" alt="img" style="max-height: 50px; border-radius: 8px;">
+            <span *ngIf="!c.imagen" class="text-muted">Sin imagen</span>
+          </td>
+          <td>{{ c.nombre }}</td>
+          <td>{{ c.descripcion }}</td>
+          <td>{{ c.estado }}</td>
+          <td>
+            <button class="btn btn-danger btn-sm"
+                    (click)="eliminarCategoria(c._id)">
+              Eliminar
+            </button>
+          </td>
+        </tr>
+        <tr *ngIf="categoriasFiltradas.length === 0">
+          <td colspan="5" class="text-center text-muted py-3">No se encontraron categorías</td>
+        </tr>
+      </tbody>
+
+    </table>
+
+  </div>
+
+</div>

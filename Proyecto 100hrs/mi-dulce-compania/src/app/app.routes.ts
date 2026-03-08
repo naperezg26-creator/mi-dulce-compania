@@ -9,6 +9,7 @@ import { ProductosComponent } from './components/productos/productos';
 import { RegistroComponent } from './components/registro/registro';
 import { DashboardComponent } from './components/dashboard/dashboard';
 import { TiendaComponent } from './components/tienda/tienda';
+import { ProductoDetalleComponent } from './components/producto-detalle/producto-detalle';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -19,6 +20,7 @@ export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'registro', component: RegistroComponent },
   { path: 'tienda', component: TiendaComponent },
+  { path: 'tienda/:id', component: ProductoDetalleComponent },
   {
     path: 'dashboard',
     component: DashboardComponent,
@@ -37,6 +39,11 @@ export const routes: Routes = [
         path: 'usuarios',
         loadComponent: () => import('./components/usuarios/usuarios')
           .then(m => m.UsuariosComponent)
+      },
+      {
+        path: 'categorias',
+        loadComponent: () => import('./components/categorias/categorias')
+          .then(m => m.CategoriasComponent)
       },
       { path: '', redirectTo: 'productos', pathMatch: 'full' }
     ]

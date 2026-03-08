@@ -12,7 +12,10 @@
   box-shadow: 4px 0 15px rgba(0,0,0,0.05);
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
 }
 
 .logo {
@@ -47,7 +50,7 @@
 }
 
 .btn-logout {
-  margin-top: 2rem;
+  margin-top: 1rem;
   padding: 0.6rem;
   border-radius: 12px;
   border: none;

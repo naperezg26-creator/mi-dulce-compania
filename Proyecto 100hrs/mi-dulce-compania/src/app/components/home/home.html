@@ -25,6 +25,26 @@
     </button>
 </div>
 
+<!-- CATEGORÍAS -->
+<section *ngIf="categorias.length > 0" class="container mt-5 mb-4">
+    <h2 class="text-center titulo-tienda mb-4">Nuestras Categorías</h2>
+    <div class="d-flex flex-wrap justify-content-center gap-4">
+        <div *ngFor="let cat of categorias" class="categoria-card text-center">
+            <div class="categoria-img-wrapper">
+                <img *ngIf="cat.imagen"
+                     [src]="'http://localhost:3000' + cat.imagen"
+                     [alt]="cat.nombre"
+                     class="categoria-img">
+                <div *ngIf="!cat.imagen" class="categoria-img-placeholder">
+                    <i class="bi bi-grid" style="font-size: 2rem;"></i>
+                </div>
+            </div>
+            <h5 class="categoria-nombre mt-2">{{ cat.nombre }}</h5>
+            <p *ngIf="cat.descripcion" class="categoria-desc">{{ cat.descripcion }}</p>
+        </div>
+    </div>
+</section>
+
 <section class="container my-6">
     <div class="text-center seccion-bienvenida">
         <h2 class="titulo-bienvenida">Hecho con cariño, pensado con diseño</h2>

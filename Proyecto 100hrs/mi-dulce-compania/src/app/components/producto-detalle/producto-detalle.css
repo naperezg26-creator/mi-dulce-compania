@@ -1,0 +1,23 @@
+.detalle-imagen {
+  border-radius: 20px;
+  max-height: 400px;
+  object-fit: cover;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.sin-imagen {
+  height: 300px;
+  background-color: var(--crema-secundaria);
+  border-radius: 20px;
+}
+
+.descripcion-texto {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: var(--texto-oscuro);
+}
+
+.detalles-extra p {
+  margin-bottom: 0.4rem;
+  color: var(--texto-oscuro);
+}

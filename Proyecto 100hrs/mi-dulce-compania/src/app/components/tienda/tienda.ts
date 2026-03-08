@@ -1,12 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 import { ProductService } from '../../services/product';
 
 @Component({
   selector: 'app-tienda',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './tienda.html',
   styleUrl: './tienda.css'
 })
@@ -17,7 +18,7 @@ export class TiendaComponent implements OnInit {
   cargando = true;
   error = '';
 
-  constructor(private productService: ProductService) {}
+  constructor(private productService: ProductService, private cdr: ChangeDetectorRef) {}
 
   ngOnInit() {
     this.cargarProductos();
@@ -27,12 +28,16 @@ export class TiendaComponent implements OnInit {
     this.cargando = true;
     this.productService.listarTodos().subscribe({
       next: (res: any) => {
+        console.log('Respuesta API:', res);
         this.productos = (res.data || []).filter((p: any) => p.estado === 'activo');
         this.cargando = false;
+        this.cdr.detectChanges();
       },
-      error: () => {
+      error: (err: any) => {
+        console.error('Error API:', err);
         this.error = 'No se pudieron cargar los productos. Intenta más tarde.';
         this.cargando = false;
+        this.cdr.detectChanges();
       }
     });
   }

@@ -6,6 +6,7 @@ const router = express.Router();
 const usuariosController = require('./api/controladores/usuariosController');
 const productosController = require('./api/controladores/productosController');
 const rolesController   = require('./api/controladores/rolesController');
+const categoriasController = require('./api/controladores/categoriasController');
 
 // Configuración de multer para subir imágenes
 const storage = multer.diskStorage({
@@ -40,5 +41,12 @@ router.put('/roles/Actualizar',   rolesController.actualizarRol);
 router.delete('/roles/Eliminar',  rolesController.eliminarRol);
 router.get('/roles/ListarId',     rolesController.listarPorId);
 router.get('/roles/ListarTodos',  rolesController.listarTodos);
+
+// ── CATEGORIAS - CRUD ───────────────────────────────────────
+router.post('/categorias/Guardar', upload.single('imagen'), categoriasController.guardarCategoria);
+router.put('/categorias/Actualizar',   categoriasController.actualizarCategoria);
+router.delete('/categorias/Eliminar',  categoriasController.eliminarCategoria);
+router.get('/categorias/ListarId',     categoriasController.listarPorId);
+router.get('/categorias/ListarTodos',  categoriasController.listarTodos);
 
 module.exports = router;
