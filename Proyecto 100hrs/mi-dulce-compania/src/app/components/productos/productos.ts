@@ -46,9 +46,12 @@ export class ProductosComponent implements OnInit {
   }
 
   cargarProductos() {
-    this.productService.listarTodos().subscribe((resp: any) => {
-      this.productos = resp.data;
-      this.cdr.detectChanges();
+    this.productService.listarTodos().subscribe({
+      next: (resp: any) => {
+        this.productos = resp.data;
+        this.cdr.detectChanges();
+      },
+      error: () => {}
     });
   }
 
@@ -66,6 +69,26 @@ export class ProductosComponent implements OnInit {
   }
 
   crearProducto() {
+    if (!this.codigo.trim()) {
+      this.mostrarMensaje('el campo codigo es obligatorio', 'error');
+      return;
+    }
+    if (!this.nombre.trim()) {
+      this.mostrarMensaje('el campo nombre es obligatorio', 'error');
+      return;
+    }
+    if (!this.cantidad && this.cantidad !== 0) {
+      this.mostrarMensaje('el campo cantidad es obligatorio', 'error');
+      return;
+    }
+    if (!this.precio && this.precio !== 0) {
+      this.mostrarMensaje('el campo precio es obligatorio', 'error');
+      return;
+    }
+    if (!this.estado.trim()) {
+      this.mostrarMensaje('el campo estado es obligatorio', 'error');
+      return;
+    }
     this.productService.crearProducto({
       codigo: this.codigo,
       nombre: this.nombre,

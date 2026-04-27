@@ -20,11 +20,16 @@ export class UsuariosComponent implements OnInit {
     nuevoEmail = '';
     nuevoPassword = '';
     nuevoIdrol = 'cliente';
+    nuevoRol = '';
+    nuevoEstado = 'activo';
+    datosroles: any[] = [];
 
     usuarioEditando: any = null;
     nombreEdit = '';
     emailEdit = '';
     idrolEdit = 'cliente';
+    rolEdit = '';
+    estadoEdit = 'activo';
 
     mensaje = '';
     tipoMensaje = '';
@@ -46,15 +51,38 @@ export class UsuariosComponent implements OnInit {
     }
 
     cargarUsuarios() {
-        this.usuariosService.listarTodos().subscribe((resp: any) => {
-            this.usuarios = resp.data;
-            this.cdr.detectChanges();
+        this.usuariosService.listarTodos().subscribe({
+            next: (resp: any) => {
+                this.usuarios = resp.data;
+                this.cdr.detectChanges();
+            },
+            error: () => {}
         });
     }
 
     crearUsuario() {
-        if (!this.nuevoNombre.trim() || !this.nuevoEmail.trim() || !this.nuevoPassword.trim()) {
-            this.mostrarMensaje('Todos los campos son obligatorios', 'error');
+        if (!this.nuevoNombre.trim()) {
+            this.mostrarMensaje('el campo nombre es obligatorio', 'error');
+            return;
+        }
+        if (!this.nuevoEmail.trim()) {
+            this.mostrarMensaje('el campo email es obligatorio', 'error');
+            return;
+        }
+        if (!this.nuevoPassword.trim()) {
+            this.mostrarMensaje('el campo password es obligatorio', 'error');
+            return;
+        }
+        if (!this.nuevoIdrol.trim()) {
+            this.mostrarMensaje('el campo idrol es obligatorio', 'error');
+            return;
+        }
+        if (!this.nuevoRol.trim()) {
+            this.mostrarMensaje('el campo rol es obligatorio', 'error');
+            return;
+        }
+        if (!this.nuevoEstado.trim()) {
+            this.mostrarMensaje('el campo estado es obligatorio', 'error');
             return;
         }
         this.usuariosService.crearUsuario({
@@ -82,6 +110,30 @@ export class UsuariosComponent implements OnInit {
     }
 
     guardarEdicion() {
+        if (!this.usuarioEditando._id || this.usuarioEditando._id.trim() === '') {
+            this.mostrarMensaje('el campo _id es obligatorio', 'error');
+            return;
+        }
+        if (this.usuarioEditando._id.length !== 24) {
+            this.mostrarMensaje('el campo _id debe ser de 24 caracteres', 'error');
+            return;
+        }
+        if (!this.nombreEdit.trim()) {
+            this.mostrarMensaje('el campo nombre es obligatorio', 'error');
+            return;
+        }
+        if (!this.idrolEdit.trim()) {
+            this.mostrarMensaje('el campo idrol es obligatorio', 'error');
+            return;
+        }
+        if (!this.rolEdit.trim()) {
+            this.mostrarMensaje('el campo rol es obligatorio', 'error');
+            return;
+        }
+        if (!this.estadoEdit.trim()) {
+            this.mostrarMensaje('el campo estado es obligatorio', 'error');
+            return;
+        }
         this.usuariosService.actualizarUsuario({
             _id: this.usuarioEditando._id,
             nombre: this.nombreEdit,

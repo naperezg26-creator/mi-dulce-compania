@@ -1,120 +1,393 @@
-const Usuario = require('../modelos/usuariosModel');
-const jwt = require('jsonwebtoken');
-const { config } = require('../../config');
+var usuariosModel = require("../modelos/usuariosModel.js").usuariosModel
+var bitacoraModel = require("../modelos/bitacoraModel.js").bitacoraModel
+const nodemailer = require("nodemailer")
 
-const usuariosController = {};
+var usuariosController = {}
 
-// REGISTRO
-usuariosController.Guardar = async function (req, res) {
-    try {
-        const { nombre, email, password, idrol } = req.body;
+// ==================== GUARDAR ====================
+usuariosController.Guardar = function(request, response){
 
-        const existe = await Usuario.findOne({ email: email.toLowerCase() });
-        if (existe) {
-            return res.json({ state: false, mensaje: 'El correo ya existe' });
+    var post = {
+        nombre: request.body.nombre,
+        email: request.body.email,
+        password: request.body.password,
+        idrol: request.body.idrol,
+        rol: request.body.rol,
+        estado: request.body.estado
+    }
+
+    if(post.nombre == undefined || post.nombre == null || post.nombre == ""){
+        response.json({state:false, mensaje:"El campo nombre es obligatorio"})
+        return false
+    }
+
+    if(post.email == undefined || post.email == null || post.email == ""){
+        response.json({state:false, mensaje:"El campo email es obligatorio"})
+        return false
+    }
+
+    if(post.password == undefined || post.password == null || post.password == ""){
+        response.json({state:false, mensaje:"El campo password es obligatorio"})
+        return false
+    }
+
+    if(post.idrol == undefined || post.idrol == null || post.idrol == ""){
+        response.json({state:false, mensaje:"El campo idrol es obligatorio"})
+        return false
+    }
+
+    if(post.rol == undefined || post.rol == null || post.rol == ""){
+        response.json({state:false, mensaje:"El campo rol es obligatorio"})
+        return false
+    }
+
+    if(post.estado == undefined || post.estado == null || post.estado == ""){
+        response.json({state:false, mensaje:"El campo estado es obligatorio"})
+        return false
+    }
+
+    post.password = sha256(post.password + config.secret)
+
+    usuariosModel.BuscarporEmail(post, function(existe){
+        if(existe.length == 0){
+            post.codigoact = "G-" + Math.floor(Math.random() * (9999 - 1000) + 1000)
+
+            usuariosModel.Guardar(post, function(respuesta){
+                if(respuesta.state == true){
+                    response.json({state:true, mensaje:"Usuario almacenado Correctamente"})
+                }else{
+                    response.json({state:false, mensaje:"Se presento un error al crear el usuario"})
+                }
+            })
+        }else{
+            response.json({state:false, mensaje:"El correo ya existe intente con otro"})
         }
+    })
+}
 
-        const nuevoUsuario = await Usuario.create({
-            nombre,
-            email,
-            password,
-            idrol: idrol || 'cliente'
-        });
+// ==================== ACTUALIZAR ====================
+usuariosController.Actualizar = function(request, response){
 
-        return res.json({
-            state: true,
-            mensaje: 'Usuario registrado correctamente',
-            data: nuevoUsuario
-        });
-    } catch (error) {
-        return res.status(500).json({ state: false, mensaje: error.message });
+    var post = {
+        _id: request.body._id,
+        nombre: request.body.nombre,
+        idrol: request.body.idrol,
+        rol: request.body.rol,
+        estado: request.body.estado
     }
-};
 
-// LOGIN
-usuariosController.Login = async function (req, res) {
-    try {
-        const { email, password } = req.body;
+    if(post._id == undefined || post._id == null || post._id == ""){
+        response.json({state:false, mensaje:"El campo _id es obligatorio"})
+        return false
+    }
 
-        if (!email || !password) {
-            return res.json({ state: false, mensaje: 'Todos los campos son requeridos' });
+    if(post._id.length != 24){
+        response.json({state:false, mensaje:"El campo _id debe ser de 24 caracteres"})
+        return false
+    }
+
+    if(post.nombre == undefined || post.nombre == null || post.nombre == ""){
+        response.json({state:false, mensaje:"El campo nombre es obligatorio"})
+        return false
+    }
+
+    if(post.idrol == undefined || post.idrol == null || post.idrol == ""){
+        response.json({state:false, mensaje:"El campo idrol es obligatorio"})
+        return false
+    }
+
+    if(post.rol == undefined || post.rol == null || post.rol == ""){
+        response.json({state:false, mensaje:"El campo rol es obligatorio"})
+        return false
+    }
+
+    if(post.estado == undefined || post.estado == null || post.estado == ""){
+        response.json({state:false, mensaje:"El campo estado es obligatorio"})
+        return false
+    }
+
+    usuariosModel.ExisteId(post, function(data){
+        if(data.length == 0){
+            response.json({state:false, mensaje:"El _id no existe en la base de datos, no se puede actualizar"})
+            return false
+        }else{
+            usuariosModel.Actualizar(post, function(respuesta){
+                if(respuesta.state == true){
+                    response.json({state:true, mensaje:"Registro Actualizado"})
+                    return false
+                }else{
+                    response.json({state:false, mensaje:"no se pudo actualizar"})
+                    return false
+                }
+            })
         }
+    })
+}
 
-        const usuario = await Usuario.findOne({ email: email.toLowerCase() });
-        if (!usuario) {
-            return res.json({ state: false, mensaje: 'Usuario no encontrado' });
+// ==================== ELIMINAR ====================
+usuariosController.Eliminar = function(request, response){
+
+    var post = {
+        _id: request.body._id
+    }
+
+    if(post._id == undefined || post._id == null || post._id == ""){
+        response.json({state:false, mensaje:"El campo _id es obligatorio"})
+        return false
+    }
+
+    if(post._id.length != 24){
+        response.json({state:false, mensaje:"El campo _id debe ser de 24 caracteres"})
+        return false
+    }
+
+    usuariosModel.ExisteId(post, function(data){
+        if(data.length == 0){
+            response.json({state:false, mensaje:"El _id no existe en la base de datos, no se puede eliminar"})
+            return false
+        }else{
+            usuariosModel.Eliminar(post, function(respuesta){
+                if(respuesta.state == true){
+                    response.json({state:true, mensaje:"Registro Eliminado"})
+                    return false
+                }else{
+                    response.json({state:false, mensaje:"no se pudo eliminar"})
+                    return false
+                }
+            })
         }
+    })
+}
 
-        if (usuario.password !== password) {
-            return res.json({ state: false, mensaje: 'Contraseña incorrecta' });
+// ==================== LISTAR TODOS ====================
+usuariosController.ListarTodos = function(request, response){
+
+    var post = {}
+
+    usuariosModel.ListarTodos(post, function(respuesta){
+        response.json({state:true, data:respuesta})
+    })
+}
+
+// ==================== LISTAR POR ID ====================
+usuariosController.ListarId = function(request, response){
+
+    var post = {
+        _id: request.body._id
+    }
+
+    if(post._id == undefined || post._id == null || post._id == ""){
+        response.json({state:false, mensaje:"El campo _id es obligatorio"})
+        return false
+    }
+
+    if(post._id.length != 24){
+        response.json({state:false, mensaje:"El campo _id debe ser de 24 caracteres"})
+        return false
+    }
+
+    usuariosModel.ListarId(post, function(respuesta){
+        response.json({state:true, data:respuesta})
+    })
+}
+
+// ==================== REGISTRAR ====================
+usuariosController.Registrar = function(request, response){
+
+    var post = {
+        nombre: request.body.nombre,
+        email: request.body.email,
+        password: request.body.password
+    }
+
+    if(post.nombre == undefined || post.nombre == null || post.nombre == ""){
+        response.json({state:false, mensaje:"El campo nombre es obligatorio"})
+        return false
+    }
+
+    if(post.email == undefined || post.email == null || post.email == ""){
+        response.json({state:false, mensaje:"El campo email es obligatorio"})
+        return false
+    }
+
+    if(post.password == undefined || post.password == null || post.password == ""){
+        response.json({state:false, mensaje:"El campo password es obligatorio"})
+        return false
+    }
+
+    post.password = sha256(post.password + config.secret)
+    post.estado = "Inactivo"
+    post.idrol = "cliente"
+    post.rol = "cliente"
+
+    usuariosModel.BuscarporEmail(post, function(existe){
+        if(existe.length == 0){
+
+            post.codigoact = "G-" + Math.floor(Math.random() * (9999 - 1000) + 1000)
+
+            const transporter = nodemailer.createTransport({
+                host: config.email.host,
+                port: config.email.port,
+                secure: false,
+                requireTLS: true,
+                auth: {
+                    user: config.email.user,
+                    pass: config.email.pass
+                }
+            })
+
+            var mailOptions = {
+                from: config.email.user,
+                to: post.email,
+                subject: "Activacion de cuenta - " + config.nombreempresa,
+                html: `<h1>Hola ${post.nombre}</h1>
+                       <p>Tu codigo de activacion es: <b>${post.codigoact}</b></p>
+                       <p>Ingresa a: <a href="${config.dominio}">${config.dominio}</a></p>`
+            }
+
+            transporter.sendMail(mailOptions, (error, info) => {
+                if(error){
+                    console.log(error)
+                    response.json({state:false, mensaje:"Se presento un error al enviar el correo electronico"})
+                }else{
+                    console.log(info)
+                    usuariosModel.Registrar(post, function(respuesta){
+                        if(respuesta.state == true){
+                            response.json({state:true, mensaje:"Usuario almacenado Correctamente, verifica tu correo electronico para activar la cuenta"})
+                        }else{
+                            response.json({state:false, mensaje:"Se presento un error al crear el usuario"})
+                        }
+                    })
+                }
+            })
+        }else{
+            response.json({state:false, mensaje:"El correo ya existe, intente con otro"})
         }
+    })
+}
 
-        const payload = {
-            id: usuario._id,
-            nombre: usuario.nombre,
-            email: usuario.email,
-            idrol: usuario.idrol
-        };
+// ==================== ACTIVAR ====================
+usuariosController.Activar = function(request, response){
 
-        const token = jwt.sign(payload, config.JWT_SECRET, { expiresIn: '8h' });
-
-        return res.json({
-            state: true,
-            mensaje: 'Login exitoso',
-            token,
-            usuario: payload
-        });
-    } catch (error) {
-        return res.status(500).json({ state: false, mensaje: error.message });
+    var post = {
+        email: request.body.email,
+        codigo: request.body.codigo
     }
-};
 
-// LISTAR TODOS
-usuariosController.listarTodos = async function (req, res) {
-    try {
-        const usuarios = await Usuario.find({}, { password: 0 });
-        return res.json({ state: true, data: usuarios });
-    } catch (error) {
-        return res.status(500).json({ state: false, mensaje: error.message });
+    if(post.email == undefined || post.email == null || post.email == ""){
+        response.json({state:false, mensaje:"El campo email es obligatorio"})
+        return false
     }
-};
 
-// LISTAR POR ID
-usuariosController.listarPorId = async function (req, res) {
-    try {
-        const { _id } = req.query;
-        const usuario = await Usuario.findById(_id, { password: 0 });
-        return res.json({ state: true, data: usuario });
-    } catch (error) {
-        return res.status(500).json({ state: false, mensaje: error.message });
+    if(post.codigo == undefined || post.codigo == null || post.codigo == ""){
+        response.json({state:false, mensaje:"El campo codigo es obligatorio"})
+        return false
     }
-};
 
-// ACTUALIZAR
-usuariosController.actualizar = async function (req, res) {
-    try {
-        const { _id, nombre, email, idrol } = req.body;
-        const usuario = await Usuario.findByIdAndUpdate(
-            _id,
-            { nombre, email, idrol },
-            { new: true, projection: { password: 0 } }
-        );
-        if (!usuario) return res.json({ state: false, mensaje: 'Usuario no encontrado' });
-        return res.json({ state: true, mensaje: 'Usuario actualizado correctamente', data: usuario });
-    } catch (error) {
-        return res.status(500).json({ state: false, mensaje: error.message });
+    usuariosModel.BuscarporEmail(post, function(existe){
+        if(existe.length == 0){
+            response.json({state:false, mensaje:"El email no existe en la base de datos"})
+            return false
+        }else{
+            if(existe[0].codigoact == post.codigo){
+                var datos = {
+                    _id: existe[0]._id.toString()
+                }
+                usuariosModel.Activar(datos, function(respuesta){
+                    if(respuesta.state == true){
+                        response.json({state:true, mensaje:"Cuenta activada correctamente, dirigete al login"})
+                    }else{
+                        response.json({state:false, mensaje:"no se pudo activar la cuenta"})
+                    }
+                })
+            }else{
+                response.json({state:false, mensaje:"Codigo de activacion incorrecto"})
+            }
+        }
+    })
+}
+
+// ==================== LOGIN ====================
+usuariosController.Login = function(request, response){
+
+    var post = {
+        email: request.body.email,
+        password: request.body.password
     }
-};
 
-// ELIMINAR
-usuariosController.eliminar = async function (req, res) {
-    try {
-        const { _id } = req.body;
-        await Usuario.findByIdAndDelete(_id);
-        return res.json({ state: true, mensaje: 'Usuario eliminado correctamente' });
-    } catch (error) {
-        return res.status(500).json({ state: false, mensaje: error.message });
+    if(post.email == undefined || post.email == null || post.email == ""){
+        response.json({state:false, mensaje:"El campo email es obligatorio"})
+        return false
     }
-};
 
-module.exports = usuariosController;
+    if(post.password == undefined || post.password == null || post.password == ""){
+        response.json({state:false, mensaje:"El campo password es obligatorio"})
+        return false
+    }
+
+    post.password = sha256(post.password + config.secret)
+
+    usuariosModel.Login(post, function(respuesta){
+        if(respuesta.length > 0){
+            if(respuesta[0].estado == "Activo"){
+                request.session._id = respuesta[0]._id
+                request.session.nombre = respuesta[0].nombre
+                request.session.email = respuesta[0].email
+                request.session.rol = respuesta[0].rol
+                request.session.idrol = respuesta[0].idrol
+                response.json({state:true, mensaje:"Bienvenido " + respuesta[0].nombre, nombre:respuesta[0].nombre, email:respuesta[0].email})
+            }else{
+                response.json({state:false, mensaje:"Tu cuenta no ha sido verificada, revisa tu email"})
+            }
+        }else{
+            response.json({state:false, mensaje:"Email o password incorrectos"})
+        }
+    })
+}
+
+// ==================== CAMBIAR PASSWORD ====================
+usuariosController.CambiarPassword = function(request, response){
+
+    var post = {
+        _id: request.session._id,
+        password: request.body.password,
+        confirm: request.body.confirm
+    }
+
+    if(post._id == undefined || post._id == null || post._id == ""){
+        response.json({state:false, mensaje:"para cambiar la contraseña se debe loguear"})
+        return false
+    }
+
+    if(post._id.length != 24){
+        response.json({state:false, mensaje:"el campo _id debe ser de 24 caracteres"})
+        return false
+    }
+
+    if(post.password == undefined || post.password == null || post.password == ""){
+        response.json({state:false, mensaje:"el campo password es obligatorio"})
+        return false
+    }
+
+    if(post.confirm == undefined || post.confirm == null || post.confirm == ""){
+        response.json({state:false, mensaje:"el campo confirm es obligatorio"})
+        return false
+    }
+
+    if(post.password != post.confirm){
+        response.json({state:false, mensaje:"El Password y su confirmacion no coinciden"})
+        return false
+    }
+
+    post.password = sha256(post.password + config.secret)
+
+    usuariosModel.CambiarPassword(post, function(respuesta){
+        if(respuesta.state == true){
+            response.json({state:true, mensaje:"Password cambiado correctamente"})
+        }else{
+            response.json({state:false, mensaje:"no se pudo cambiar el password"})
+        }
+    })
+}
+
+module.exports = usuariosController
