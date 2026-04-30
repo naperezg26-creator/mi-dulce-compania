@@ -22,19 +22,18 @@ export class LoginComponent {
     this.auth.login({
       email: this.email,
       password: this.password
-    }).subscribe((resp: any) => {
-
-      if (resp.state) {
-
-        // Guardamos el token
-        localStorage.setItem('token', resp.token);
-
-        this.router.navigate(['/dashboard']);
-
-      } else {
-        this.mensaje = resp.mensaje;
+    }).subscribe({
+      next: (resp: any) => {
+        if (resp.state) {
+          localStorage.setItem('usuario', JSON.stringify({ nombre: resp.nombre, email: resp.email }));
+          this.router.navigate(['/dashboard']);
+        } else {
+          this.mensaje = resp.mensaje;
+        }
+      },
+      error: () => {
+        this.mensaje = 'No se pudo conectar con el servidor. Intenta de nuevo.';
       }
-
     });
   }
 }
