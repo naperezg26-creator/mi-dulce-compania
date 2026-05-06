@@ -21,18 +21,21 @@ export class RegistroComponent {
   constructor(private auth: AuthService, private router: Router) {}
 
   registrar() {
-  this.auth.registro({
-    nombre: this.nombre,
-    email: this.email,
-    password: this.password
-  }).subscribe((resp: any) => {
-
-    if (resp.state) {
-      this.router.navigate(['/login']);
-    } else {
-      this.mensaje = resp.mensaje;
-    }
-
-  });
-}
+    this.auth.registro({
+      nombre: this.nombre,
+      email: this.email,
+      password: this.password
+    }).subscribe({
+      next: (resp: any) => {
+        if (resp.state) {
+          this.router.navigate(['/login']);
+        } else {
+          this.mensaje = resp.mensaje;
+        }
+      },
+      error: () => {
+        this.mensaje = 'No se pudo conectar con el servidor. Intenta de nuevo.';
+      }
+    });
+  }
 }
