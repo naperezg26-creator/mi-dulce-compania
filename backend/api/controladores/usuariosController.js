@@ -1,6 +1,9 @@
 var usuariosModel = require("../modelos/usuariosModel.js").usuariosModel
 var bitacoraModel = require("../modelos/bitacoraModel.js").bitacoraModel
 const nodemailer = require("nodemailer")
+const crypto = require("crypto")
+const { config } = require("../../config.js")
+const sha256 = (str) => crypto.createHash('sha256').update(str).digest('hex')
 
 var usuariosController = {}
 
