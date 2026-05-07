@@ -11,7 +11,8 @@ productosController.Guardar = function(request, response){
         cantidad: request.body.cantidad,
         precio: request.body.precio,
         descripcion: request.body.descripcion,
-        estado: request.body.estado
+        estado: request.body.estado,
+        imagen: request.file ? '/uploads/' + request.file.filename : ''
     }
 
     if(post.codigo == undefined || post.codigo == null || post.codigo == ""){
