@@ -2,6 +2,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ProductService } from '../../services/product';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-productos',
@@ -13,6 +14,7 @@ import { ProductService } from '../../services/product';
 export class ProductosComponent implements OnInit {
 
   productos: any[] = [];
+  baseUrl = environment.baseUrl;
   busqueda = '';
 
   codigo = '';

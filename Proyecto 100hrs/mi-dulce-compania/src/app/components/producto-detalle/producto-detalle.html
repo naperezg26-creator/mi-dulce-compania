@@ -21,7 +21,7 @@
     <!-- Imagen -->
     <div class="col-md-5 text-center">
       <img *ngIf="producto.imagen"
-           [src]="'http://localhost:3000' + producto.imagen"
+           [src]="baseUrl + producto.imagen"
            [alt]="producto.nombre"
            class="img-fluid detalle-imagen">
       <div *ngIf="!producto.imagen" class="sin-imagen d-flex align-items-center justify-content-center">

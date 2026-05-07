@@ -42,7 +42,7 @@
       <a [routerLink]="['/tienda', producto._id]" class="text-decoration-none">
         <div class="card producto-card h-100">
           <img *ngIf="producto.imagen"
-               [src]="'http://localhost:3000' + producto.imagen"
+               [src]="baseUrl + producto.imagen"
                [alt]="producto.nombre"
                class="producto-imagen card-img-top">
           <div class="card-body d-flex flex-column text-center p-4">

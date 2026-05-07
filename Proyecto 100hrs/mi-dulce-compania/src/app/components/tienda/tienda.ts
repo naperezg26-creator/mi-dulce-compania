@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { ProductService } from '../../services/product';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-tienda',
@@ -17,6 +18,7 @@ export class TiendaComponent implements OnInit {
   busqueda = '';
   cargando = true;
   error = '';
+  baseUrl = environment.baseUrl;
 
   constructor(private productService: ProductService, private cdr: ChangeDetectorRef) {}
 

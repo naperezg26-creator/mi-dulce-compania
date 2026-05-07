@@ -32,7 +32,7 @@
         <div *ngFor="let cat of categorias" class="categoria-card text-center">
             <div class="categoria-img-wrapper">
                 <img *ngIf="cat.imagen"
-                     [src]="'http://localhost:3000' + cat.imagen"
+                     [src]="baseUrl + cat.imagen"
                      [alt]="cat.nombre"
                      class="categoria-img">
                 <div *ngIf="!cat.imagen" class="categoria-img-placeholder">

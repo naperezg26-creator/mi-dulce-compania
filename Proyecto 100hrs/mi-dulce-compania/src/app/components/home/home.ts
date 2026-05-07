@@ -1,6 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CategoriasService } from '../../services/categorias';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-home',
@@ -12,6 +13,7 @@ import { CategoriasService } from '../../services/categorias';
 export class HomeComponent implements OnInit {
 
   categorias: any[] = [];
+  baseUrl = environment.baseUrl;
 
   constructor(private categoriasService: CategoriasService, private cdr: ChangeDetectorRef) {}
 

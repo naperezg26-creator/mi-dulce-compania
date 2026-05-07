@@ -85,7 +85,7 @@
       <tbody>
         <tr *ngFor="let c of categoriasFiltradas">
           <td>
-            <img *ngIf="c.imagen" [src]="'http://localhost:3000' + c.imagen" alt="img" style="max-height: 50px; border-radius: 8px;">
+            <img *ngIf="c.imagen" [src]="baseUrl + c.imagen" alt="img" style="max-height: 50px; border-radius: 8px;">
             <span *ngIf="!c.imagen" class="text-muted">Sin imagen</span>
           </td>
           <td>{{ c.nombre }}</td>

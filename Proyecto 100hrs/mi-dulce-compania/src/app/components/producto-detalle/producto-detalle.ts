@@ -2,6 +2,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { ProductService } from '../../services/product';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-producto-detalle',
@@ -15,6 +16,7 @@ export class ProductoDetalleComponent implements OnInit {
   producto: any = null;
   cargando = true;
   error = '';
+  baseUrl = environment.baseUrl;
 
   constructor(
     private route: ActivatedRoute,

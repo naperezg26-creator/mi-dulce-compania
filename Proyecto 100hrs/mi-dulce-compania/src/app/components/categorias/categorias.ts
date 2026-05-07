@@ -2,6 +2,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CategoriasService } from '../../services/categorias';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-categorias',
@@ -14,6 +15,7 @@ export class CategoriasComponent implements OnInit {
 
   categorias: any[] = [];
   busqueda = '';
+  baseUrl = environment.baseUrl;
 
   nombre = '';
   descripcion = '';
