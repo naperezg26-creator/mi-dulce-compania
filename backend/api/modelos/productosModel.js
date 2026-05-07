@@ -8,6 +8,7 @@ var productosSchema = new mongoose.Schema({
     cantidad:   { type: Number },
     precio:     { type: Number },
     descripcion:{ type: String, default: "" },
+    imagen:     { type: String, default: "" },
     estado:     { type: String },
     fecha:      { type: Date, default: Date.now }
 })
@@ -15,6 +16,7 @@ var productosSchema = new mongoose.Schema({
 const Mymodel = mongoose.model("productos", productosSchema)
 
 productosModel.BuscarporCodigo = function(post, callback){
+    if (!post.codigo) return callback([])
     Mymodel.find({codigo: post.codigo}).then(function(respuesta){
         callback(respuesta)
     })
